@@ -126,7 +126,7 @@ FarmTab:AddToggle({
 
 FarmTab:AddDropdown({
 	Name = "Select Monster",
-	Default = "Noob Ninja",
+	Default = "Marine",
 	Options = {"Marine", "Pirate", "Pirate leaders", "Mr.500", "Mr.100", "Mr.0"},
 	Callback = function(Value)
 		_G.World2Monster = Value

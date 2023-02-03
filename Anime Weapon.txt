@@ -142,6 +142,16 @@ FarmTab:AddButton({
   	end    
 })
 
+FarmTab:AddButton({
+	Name = "Enter All Code in Game",
+	Callback = function(Value)
+		wait(1)
+		game:GetService("ReplicatedStorage").ServerMsg.Code:InvokeServer(AWSIMULATER)
+		wait(1)
+		game:GetService("ReplicatedStorage").ServerMsg.Code:InvokeServer(NINJAWORLD)
+	end	  
+})
+
 HatchTab:AddToggle({
 	Name = "AutoHatch",
 	Default = false,
@@ -184,6 +194,8 @@ PlayerTab:AddTextbox({
 		game.Workspace[player.Name].Humanoid.JumpPower = Value
 	end	  
 })
+
+
 
 
 end

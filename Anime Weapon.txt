@@ -5,7 +5,11 @@ local Window = OrionLib:MakeWindow({Name = "Hero Hub l PB", HidePremium = false,
 -- Values 
 _G.autoclick = false
 _G.autoHatch = false
-_G.selectEgg = "Basic Egg"
+_G.World1Farm = false
+_G.World2Farm = false
+_G.World1Monster = "Noob Ninja"
+_G.World2Monster = "Marine"
+local numbersss = 1
 function AutoFind()
 	while _G.autoclick == true do
 		repeat
@@ -18,8 +22,51 @@ end
 function autoHatch()
 	while _G.autoHatch == true do
 		repeat
-			wait(0.1)
+			game:GetService("ReplicatedStorage").Tool.DrawUp.Msg.DrawHero:InvokeServer(7000000 + numbersss,1)
+			wait(5)
 		until _G.autoHatch == false
+	end
+end
+
+function AutoFarmWorld1()
+	while _G.World1Farm == true do
+		repeat
+			for i,v in pairs (game.Workspace.Enemy["1"]:GetChildren()) do
+				if v.EnemyTag.NameLabel.Text == _G.World1Monster then
+					local player = game.Players.LocalPlayer 
+					repeat
+						player.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+						wait(0.1)
+					until v.HP.Value == 0 
+				end
+			end
+			wait(0.1)
+		until _G.World1Farm == false
+	end
+end
+
+function AutoFarmWorld2()
+	while _G.World2Farm == true do
+		if _G.autoclick == false then
+			_G.autoclick = true
+			AutoFind()
+		end
+		repeat
+			for i,v in pairs (game.Workspace.Enemy["2"]:GetChildren()) do
+				if v.EnemyTag.NameLabel.Text == _G.World2Monster then
+					local player = game.Players.LocalPlayer 
+					repeat
+						player.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+						wait(0.1)
+					until v.HP.Value == 0 
+					wait(1)
+				end
+			end
+			wait(0.1)
+		until _G.World2Farm == false
+		if _G.autoclick == true then
+			_G.autoclick = false
+		end
 	end
 end
 
@@ -50,6 +97,42 @@ FarmTab:AddToggle({
 	end    
 })
 
+FarmTab:AddToggle({
+	Name = "Auto Farm World 1",
+	Default = false,
+	Callback = function(Value)
+	    _G.World1Farm = Value
+	    AutoFarmWorld1()
+	end    
+})
+
+FarmTab:AddDropdown({
+	Name = "Select Monster",
+	Default = "Noob Ninja",
+	Options = {"Noob Ninja", "Ninja", "Zans", "Teyu", "Zabuzhan", "Deidala"},
+	Callback = function(Value)
+		_G.World1Monster = Value
+	end    
+})
+
+FarmTab:AddToggle({
+	Name = "Auto Farm World 2",
+	Default = false,
+	Callback = function(Value)
+	    _G.World2Farm = Value
+	    AutoFarmWorld2()
+	end    
+})
+
+FarmTab:AddDropdown({
+	Name = "Select Monster",
+	Default = "Noob Ninja",
+	Options = {"Marine", "Pirate", "Pirate leaders", "Mr.500", "Mr.100", "Mr.0"},
+	Callback = function(Value)
+		_G.World2Monster = Value
+	end    
+})
+
 FarmTab:AddButton({
 	Name = "AntiAfk",
 	Callback = function()
@@ -71,9 +154,14 @@ HatchTab:AddToggle({
 HatchTab:AddDropdown({
 	Name = "Select Egg",
 	Default = "50k Egg",
-	Options = {"50k Egg", "100k Egg"},
+	Options = {"50k Egg", "3.80k Egg"},
 	Callback = function(Value)
-	    _G.selectEgg = Value
+		if Value == "50k Egg" then
+			numbersss = 1
+		elseif Value == "100k Egg" then
+			numbersss = 2
+		end
+
 	end    
 })
 
@@ -84,6 +172,16 @@ PlayerTab:AddTextbox({
 	Callback = function(Value)
 		local player = game.Players.LocalPlayer
 		game.Workspace[player.Name].Humanoid.WalkSpeed = Value
+	end	  
+})
+
+PlayerTab:AddTextbox({
+	Name = "Jumppower",
+	Default = "72",
+	TextDisappear = true,
+	Callback = function(Value)
+		local player = game.Players.LocalPlayer
+		game.Workspace[player.Name].Humanoid.JumpPower = Value
 	end	  
 })
 

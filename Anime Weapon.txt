@@ -1,0 +1,92 @@
+if game.PlaceId == 11430505281 then
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Hero Hub l PB", HidePremium = false, SaveConfig = true, ConfigFolder = "HeroHub"})
+
+-- Values 
+_G.autoclick = false
+_G.autoHatch = false
+_G.selectEgg = "Basic Egg"
+function AutoFind()
+	while _G.autoclick == true do
+		repeat
+			game:GetService("ReplicatedStorage").System.SystemClick.Click:FireServer()
+			wait(0.1)
+		until _G.autoclick == false
+	end
+end
+
+function autoHatch()
+	while _G.autoHatch == true do
+		repeat
+			wait(0.1)
+		until _G.autoHatch == false
+	end
+end
+
+local FarmTab = Window:MakeTab({
+	Name = "FarmTab",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HatchTab = Window:MakeTab({
+	Name = "HatchTab",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local PlayerTab = Window:MakeTab({
+	Name = "PlayerTab",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+FarmTab:AddToggle({
+	Name = "Auto Click",
+	Default = false,
+	Callback = function(Value)
+	    _G.autoclick = Value
+	    AutoFind()
+	end    
+})
+
+FarmTab:AddButton({
+	Name = "AntiAfk",
+	Callback = function()
+      	for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+            v:Disable()
+        end
+  	end    
+})
+
+HatchTab:AddToggle({
+	Name = "AutoHatch",
+	Default = false,
+	Callback = function(Value)
+	    _G.autoHatch = Value
+	    autoHatch()
+	end    
+})
+
+HatchTab:AddDropdown({
+	Name = "Select Egg",
+	Default = "50k Egg",
+	Options = {"50k Egg", "100k Egg"},
+	Callback = function(Value)
+	    _G.selectEgg = Value
+	end    
+})
+
+PlayerTab:AddTextbox({
+	Name = "Speed",
+	Default = "30",
+	TextDisappear = true,
+	Callback = function(Value)
+		local player = game.Players.LocalPlayer
+		game.Workspace[player.Name].Humanoid.WalkSpeed = Value
+	end	  
+})
+
+
+end
+OrionLib:Init()

@@ -1,6 +1,6 @@
 if game.PlaceId == 11430505281 then
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local Window = OrionLib:MakeWindow({Name = "Hero Hub l PB", HidePremium = false, SaveConfig = true, ConfigFolder = "HeroHub"})
+local Window = OrionLib:MakeWindow({Name = "Hero Hub l Anime Weapon Simulator", HidePremium = false, SaveConfig = true, ConfigFolder = "HeroHub"})
 
 -- Values 
 _G.autoclick = false
@@ -23,7 +23,7 @@ function autoHatch()
 	while _G.autoHatch == true do
 		repeat
 			game:GetService("ReplicatedStorage").Tool.DrawUp.Msg.DrawHero:InvokeServer(7000000 + numbersss,1)
-			wait(5)
+			wait(0.1)
 		until _G.autoHatch == false
 	end
 end
@@ -168,7 +168,7 @@ HatchTab:AddDropdown({
 	Callback = function(Value)
 		if Value == "50k Egg" then
 			numbersss = 1
-		elseif Value == "100k Egg" then
+		elseif Value == "3.80k Egg" then
 			numbersss = 2
 		end
 

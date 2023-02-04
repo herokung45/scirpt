@@ -7,8 +7,10 @@ _G.autoclick = false
 _G.autoHatch = false
 _G.World1Farm = false
 _G.World2Farm = false
+_G.World3Farm = false
 _G.World1Monster = "Noob Ninja"
 _G.World2Monster = "Marine"
+_G.World3Monster = "Aggressor"
 local numbersss = 1
 function AutoFind()
 	while _G.autoclick == true do
@@ -47,10 +49,6 @@ end
 
 function AutoFarmWorld2()
 	while _G.World2Farm == true do
-		if _G.autoclick == false then
-			_G.autoclick = true
-			AutoFind()
-		end
 		repeat
 			for i,v in pairs (game.Workspace.Enemy["2"]:GetChildren()) do
 				if v.EnemyTag.NameLabel.Text == _G.World2Monster then
@@ -64,9 +62,24 @@ function AutoFarmWorld2()
 			end
 			wait(0.1)
 		until _G.World2Farm == false
-		if _G.autoclick == true then
-			_G.autoclick = false
-		end
+	end
+end
+
+function AutoFarmWorld3()
+	while _G.World3Farm == true do
+		repeat
+			for i,v in pairs (game.Workspace.Enemy["3"]:GetChildren()) do
+				if v.EnemyTag.NameLabel.Text == _G.World3Monster then
+					local player = game.Players.LocalPlayer 
+					repeat
+						player.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
+						wait(0.1)
+					until v.HP.Value == 0 
+					wait(1)
+				end
+			end
+			wait(0.1)
+		until _G.World3Farm == false
 	end
 end
 
@@ -133,6 +146,24 @@ FarmTab:AddDropdown({
 	end    
 })
 
+FarmTab:AddToggle({
+	Name = "Auto Farm World 3",
+	Default = false,
+	Callback = function(Value)
+	    _G.World3Farm = Value
+	    AutoFarmWorld3()
+	end    
+})
+
+FarmTab:AddDropdown({
+	Name = "Select Monster",
+	Default = "Aggressor",
+	Options = {"Aggressor", "Aggressor Leader", "Alien", "Alien Leader", "Friesa Servent", "Friesa"},
+	Callback = function(Value)
+		_G.World3Monster = Value
+	end    
+})
+
 FarmTab:AddButton({
 	Name = "AntiAfk",
 	Callback = function()
@@ -164,12 +195,14 @@ HatchTab:AddToggle({
 HatchTab:AddDropdown({
 	Name = "Select Egg",
 	Default = "50k Egg",
-	Options = {"50k Egg", "3.80k Egg"},
+	Options = {"50k Egg", "3.80k Egg", "280M Egg"},
 	Callback = function(Value)
 		if Value == "50k Egg" then
 			numbersss = 1
 		elseif Value == "3.80k Egg" then
 			numbersss = 2
+		elseif Value == "280M Egg" then
+			numbersss = 3
 		end
 
 	end    

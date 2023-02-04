@@ -101,6 +101,12 @@ local PlayerTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local GamepassTab = Window:MakeTab({
+	Name = "GamepassTab",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 FarmTab:AddToggle({
 	Name = "Auto Click",
 	Default = false,
@@ -228,7 +234,15 @@ PlayerTab:AddTextbox({
 	end	  
 })
 
-
+GamepassTab:AddButton({
+	Name = "Enabled All Gamepass IN GAME!!",
+	Callback = function(Value)
+		local player = game.Players.LocalPlayer
+		for i,v in pairs (player.GamePass:GetChildren()) do
+			v.Value = 1
+		end
+	end	  
+})
 
 
 end

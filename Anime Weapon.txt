@@ -14,10 +14,14 @@ _G.World3Monster = "Aggressor"
 local numbersss = 1
 function AutoFind()
 	while _G.autoclick == true do
+		game:GetService("ReplicatedStorage").ServerMsg.Setting:InvokeServer("isAutoClick",1)
+		game:GetService("ReplicatedStorage").ServerMsg.Setting:InvokeServer("SlowAutoClick",0)
 		repeat
 			game:GetService("ReplicatedStorage").System.SystemClick.Click:FireServer()
 			wait(0.1)
 		until _G.autoclick == false
+		game:GetService("ReplicatedStorage").ServerMsg.Setting:InvokeServer("isAutoClick",0)
+		game:GetService("ReplicatedStorage").ServerMsg.Setting:InvokeServer("SlowAutoClick",0)
 	end
 end
 
@@ -111,6 +115,10 @@ FarmTab:AddToggle({
 	Name = "Auto Click",
 	Default = false,
 	Callback = function(Value)
+		local player = game.Players.LocalPlayer
+		for i,v in pairs (player.GamePass:GetChildren()) do
+			v.Value = 1
+		end
 	    _G.autoclick = Value
 	    AutoFind()
 	end    

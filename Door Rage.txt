@@ -1,0 +1,109 @@
+if game.PlaceId == 11153589280 then
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local Window = OrionLib:MakeWindow({Name = "Hero Hub l Door Race", HidePremium = false, SaveConfig = true, ConfigFolder = "HeroHub"})
+
+-- Values 
+_G.AutoFarm = false
+_G.AutoHatch = false
+_G.HatchEgg = "First"
+function AutoFarmDD()
+	while _G.AutoFarm == true do
+		local player = game.Players.LocalPlayer
+		repeat
+			player.Character.HumanoidRootPart.CFrame = game.Workspace.Map.winGates["gate14"].CFrame
+			wait(4)
+			player.Character.HumanoidRootPart.CFrame = game.Workspace.Map.winGates["gate15"].CFrame
+			wait(4)
+			player.Character.Humanoid.Health = 0
+			wait(5)
+		until _G.AutoFarm == false 
+	end
+end
+
+
+function AutoHatch()
+	while _G.AutoHatch == true do
+		repeat
+			game:GetService("ReplicatedStorage").RemoteEvents.EggOpened:InvokeServer(_G.HatchEgg,"Single")
+			wait(0.1)
+		until _G.AutoHatch == false
+	end
+end
+
+local FarmTab = Window:MakeTab({
+	Name = "FarmTab",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+
+local HatchTab = Window:MakeTab({
+	Name = "HatchTab",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local PlayerTab = Window:MakeTab({
+	Name = "PlayerTab",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+FarmTab:AddToggle({
+	Name = "Auto Farm",
+	Default = false,
+	Callback = function(Value)
+	    _G.AutoFarm = Value
+	    AutoFarmDD()
+	end    
+})
+
+FarmTab:AddButton({
+	Name = "AntiAfk",
+	Callback = function()
+      	for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+            v:Disable()
+        end
+  	end    
+})
+
+HatchTab:AddToggle({
+	Name = "AutoHatch",
+	Default = false,
+	Callback = function(Value)
+	    _G.AutoHatch = Value
+	    AutoHatch()
+	end    
+})
+
+HatchTab:AddDropdown({
+	Name = "Select Egg",
+	Default = "First",
+	Options = {"First", "Second", "Third", "Fourth", "Fifth"},
+	Callback = function(Value)
+		_G.HatchEgg = Value
+	end    
+})
+
+PlayerTab:AddTextbox({
+	Name = "Speed",
+	Default = "30",
+	TextDisappear = true,
+	Callback = function(Value)
+		local player = game.Players.LocalPlayer
+		game.Workspace[player.Name].Humanoid.WalkSpeed = Value
+	end	  
+})
+
+PlayerTab:AddTextbox({
+	Name = "Jumppower",
+	Default = "72",
+	TextDisappear = true,
+	Callback = function(Value)
+		local player = game.Players.LocalPlayer
+		game.Workspace[player.Name].Humanoid.JumpPower = Value
+	end	  
+})
+
+end
+OrionLib:Init()
